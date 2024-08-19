@@ -1,0 +1,1 @@
+export const PODCAST_INDEX_API_BASE_URL = "https://api.podcastindex.org/api/1.0/"
