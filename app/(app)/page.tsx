@@ -12,11 +12,8 @@ export default function Page() {
 
         const latestEpisodeByDatePublished = (episodesResponse.data.data.items || []).sort((a: any, b: any) => new Date(b.datePublished).getTime() - new Date(a.datePublished).getTime())[0];
         const latestEpisodeAudioLink = latestEpisodeByDatePublished.enclosureUrl;
-        const speechToTextResponse = await axios(`${process.env.NEXT_PUBLIC_BASE_URL}/api/speech-to-text`, {
+        const speechToTextResponse = await axios(`${process.env.NEXT_PUBLIC_BASE_URL}/api/process-episode`, {
           method: "POST",
-          data: {
-            audioLink: latestEpisodeAudioLink
-          }
         });
         console.log(speechToTextResponse.data);
       } catch (error) {

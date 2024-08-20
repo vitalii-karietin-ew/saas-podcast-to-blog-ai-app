@@ -1,43 +1,73 @@
+import path from 'path';
+import axios from "axios";
 import { NextResponse } from "next/server";
 import { HfInference } from "@huggingface/inference";
-import { writeFileSync, unlinkSync } from "node:fs";
-import { join } from "node:path";
-import { readFileSync } from "node:fs";
-import axios from "axios";
+const fs = require('fs').promises;
+
+const filePath = path.resolve('D:/Projects/saas-podcast-to-blog-ai-app/small.mp3');
 
 const hf = new HfInference(process.env.HF_ACCESS_TOKEN);
+const chunkSize = 10 * 60 * 1000; // 10 minutes
 
 export async function POST(request: Request) {
-  const body = await request.json();
-  const { audioLink } = body;
+	const body = await request.json();
+	const { audioLink } = body;
+	if (audioLink) {
+		let response = await axios.get(audioLink, {
+			responseType: 'arraybuffer'
+		});
 
-  // Download the file
-  // const response = await axios.get(audioLink, { responseType: 'arraybuffer' });
-  // const tempFilePath = join(__dirname, 'audio.mp3');
-  // writeFileSync(tempFilePath, Buffer.from(response.data));
-	// console.log(tempFilePath)
+		let audioFile = response.data;
 
-	let response = await axios.get(audioLink)
-	console.log("response.data", typeof response.data)
-	let audioBlob = await response.data.blob();
-	// console.log("blob", audioBlob)
-  try {
-	// Load the model and process the file
-	const res = await hf.automaticSpeechRecognition({
-	  model: 'facebook/wav2vec2-base-960h',
-	  data: audioBlob,
-	},
-	{
-	  wait_for_model: true
-	});
+		if (!(audioFile instanceof ArrayBuffer)) {
+			audioFile = new Uint8Array(audioFile).buffer;
+		}
 
-	// Return the result
-	return NextResponse.json(res);
-  } catch (error) {
-	console.error("Error processing the audio file:", error);
-	return NextResponse.json({ error: "Error processing the audio file" });
-  } finally {
-	// Remove the temporary file
-	// unlinkSync(tempFilePath);
-  }
+		// Convert ArrayBuffer to Blob
+		const audioBlob = new Blob([audioFile], { type: 'audio/wav' });
+
+		const res = await hf.automaticSpeechRecognition({
+				model: 'facebook/wav2vec2-base-960h',
+				data: audioBlob,
+		}, {
+				wait_for_model: true
+		});
+	
+		return NextResponse.json(res);
+	} else {
+		try {
+			const chunks: any = [];
+			const audioBuffer = await fs.readFile(filePath);
+			// Split the audio file into chunks
+			for (let i = 0; i < audioBuffer.length; i += chunkSize) {
+				const chunk = audioBuffer.slice(i, i + chunkSize);
+				chunks.push(chunk);
+			}
+			
+			const outputBuffers = [];
+			let chunkIndex = 0;
+			for (const chunk of chunks) {
+				const chunkArrayBuffer = chunk.buffer.slice(chunk.byteOffset, chunk.byteOffset + chunk.byteLength);
+	
+				const chunkBlob = new Blob([chunkArrayBuffer], { type: 'audio/flac' });
+				console.log(`Chunk ${chunkIndex}: recognition started`)
+	
+				const res = await hf.automaticSpeechRecognition({
+					model: 'facebook/wav2vec2-base-960h',
+					data: chunkBlob,
+				}, {
+					wait_for_model: true
+				});
+	
+				const outputBuffer = res;
+				outputBuffers.push(outputBuffer);
+				chunkIndex++;
+			};
+
+			return NextResponse.json(outputBuffers, { status: 200 });
+		} catch (error) {
+			console.error("Error processing the audio file:", error);
+			return NextResponse.json({ error: "Error processing the audio file" }, { status: 400 });
+		}
+	}
 }

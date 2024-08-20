@@ -17,7 +17,7 @@ export async function POST(request: Request) {
 		});
 		console.log(res);
 		return NextResponse.json(res);
-  } catch (error) {
+	} catch (error) {
 		console.error("Error processing while the summarization:", error);
 		return NextResponse.json({ error: "Error processing while the summarization" });
   }
