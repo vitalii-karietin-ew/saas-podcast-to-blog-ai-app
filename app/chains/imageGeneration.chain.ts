@@ -1,13 +1,13 @@
 import { HfInference } from "@huggingface/inference";
-import { ImageGenerationInputType, ChainStep } from "../utils/types";
+import { ImageGenerationInputType, ChainStep, ImageGenerationOutputType } from "../utils/types";
 import { Runnable, RunnableConfig } from "@langchain/core/runnables";
 
 const hf = new HfInference(process.env.HF_ACCESS_TOKEN);
 
-export class ImageGenerationChain extends Runnable<ImageGenerationInputType, Blob, RunnableConfig> {
+export class ImageGenerationChain extends Runnable<ImageGenerationInputType, ImageGenerationOutputType, RunnableConfig> {
 	lc_namespace: string[] = ["ImageGenerationChain"];
 
-	async invoke(input: ImageGenerationInputType): Promise<Blob> {
+	async invoke(input: ImageGenerationInputType): Promise<ImageGenerationOutputType> {
 		const { prompt, callback } = input;
 		console.log('Generating image....');
 		const image = await hf.textToImage({
@@ -18,7 +18,10 @@ export class ImageGenerationChain extends Runnable<ImageGenerationInputType, Blo
 			wait_for_model: true
 		});
 
-		callback(ChainStep.ImageGeneration, image);
-		return image;
+		// TODO: Implement callback
+		// callback(ChainStep.ImageGeneration, image);
+		return {
+			image
+		}
 	}
 }

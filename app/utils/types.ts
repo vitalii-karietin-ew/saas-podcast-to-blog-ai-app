@@ -18,15 +18,19 @@ interface ChainInput {
 	callback?: StepCallback;
 };
 
+export interface TextTranscriptionInputType extends ChainInput {
+	audioSource?: Blob;
+};
+
+export interface TextTranscriptionOutputType {
+	text?: string;
+};
+
 export interface SummarizationInputType extends ChainInput {
-	textToSummarize: string;
+	text: string;
 };
 
-export interface ImageGenerationInputType extends ChainInput {
-	prompt: string;
-};
-
-export interface PromptGenerationInputType extends ChainInput {
+export interface SummarizationOutputType {
 	text: string;
 };
 
@@ -34,10 +38,31 @@ export interface TextToSpeechInputType extends ChainInput {
 	text: string;
 };
 
+export interface TextToSpeechOutputType {
+	audio: ArrayBuffer | Blob;
+	text: string;
+};
+
 export interface TextTranslationInputType extends ChainInput {
 	text: string;
 };
 
-export interface TextTranscriptionInputType extends ChainInput {
-	audioSource?: Blob;
+export interface TextTranslationOutputType {
+	text: string;
+};
+
+export interface PromptGenerationInputType extends ChainInput {
+	text: string;
+};
+
+export interface PromptGenerationOutputType {
+	prompt: string;
+};
+
+export interface ImageGenerationInputType extends ChainInput {
+	prompt: string;
+};
+
+export interface ImageGenerationOutputType {
+	image: ArrayBuffer | Blob;
 };
