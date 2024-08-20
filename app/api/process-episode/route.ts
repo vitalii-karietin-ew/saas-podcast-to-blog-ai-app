@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     .pipe(promptGenerationChain)
     .pipe(imageGenerationChain);
 
-  const res = chains.invoke({ audioSource: new Blob, })
+  const res = chains.invoke({ audioSource: new Blob })
 
   return NextResponse.json({ res, completed: true })
 }
