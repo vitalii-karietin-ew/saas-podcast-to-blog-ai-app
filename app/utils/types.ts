@@ -1,4 +1,4 @@
-
+// Backend
 export enum ChainStep {
   Transcription,
 	Summarization,
@@ -19,7 +19,7 @@ interface ChainInput {
 };
 
 export interface TextTranscriptionInputType extends ChainInput {
-	audioSource?: Blob;
+	audioSource?: Blob | ArrayBuffer;
 };
 
 export interface TextTranscriptionOutputType {
@@ -65,4 +65,12 @@ export interface ImageGenerationInputType extends ChainInput {
 
 export interface ImageGenerationOutputType {
 	image: ArrayBuffer | Blob;
+};
+
+// Frontend
+export type Podcast = {
+	title: string;
+	description: string;
+	image: string;
+	audio: string;
 };
