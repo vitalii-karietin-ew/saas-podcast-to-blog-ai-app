@@ -39,7 +39,7 @@ export interface TextToSpeechInputType extends ChainInput {
 };
 
 export interface TextToSpeechOutputType {
-	audio: ArrayBuffer | Blob;
+	audio: Buffer;
 	text: string;
 };
 
@@ -64,7 +64,16 @@ export interface ImageGenerationInputType extends ChainInput {
 };
 
 export interface ImageGenerationOutputType {
-	image: ArrayBuffer | Blob;
+	image: Blob;
+};
+
+export interface AskQuestionInputType {
+	question: string;
+	context: string;
+};
+
+export interface AskQuestionOutputType {
+	answer: string;
 };
 
 // Frontend

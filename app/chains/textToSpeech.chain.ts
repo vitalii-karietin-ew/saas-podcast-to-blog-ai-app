@@ -1,8 +1,10 @@
-import { HfInference } from "@huggingface/inference";
 import { ChainStep, TextToSpeechInputType, TextToSpeechOutputType } from "../utils/types";
 import { Runnable, RunnableConfig } from "@langchain/core/runnables";
 
-const hf = new HfInference(process.env.HF_ACCESS_TOKEN);
+import { ElevenLabsClient, ElevenLabs } from "elevenlabs";
+
+const client = new ElevenLabsClient({ apiKey: process.env.ELEVENLABS_API_KEY });
+const voiceId = "eVItLK1UvXctxuaRV2Oq";
 
 export class TextToSpeechChain extends Runnable<TextToSpeechInputType, TextToSpeechOutputType, RunnableConfig> {
 	lc_namespace: string[] = ["TextToSpeechChain"];
@@ -10,18 +12,32 @@ export class TextToSpeechChain extends Runnable<TextToSpeechInputType, TextToSpe
 	async invoke(input: TextToSpeechInputType): Promise<TextToSpeechOutputType> {
 		const { text, callback } = input;
 		console.log('Text to speech processing...');
-		const audioOutput = await hf.textToSpeech({
-			model: 'elevenlabs/api-reference/text-to-speech',
-			inputs: text
-		},{
-			wait_for_model: true
-		});
+		try {
+			const audioOutput = await client.textToSpeech.convert(voiceId, {
+				// optimize_streaming_latency: ElevenLabs.OptimizeStreamingLatency.Zero,
+				// output_format: ElevenLabs.OutputFormat.Mp32205032,
+				text,
+				voice_settings: {
+					stability: 0.1,
+					similarity_boost: 0.3,
+					style: 0.2
+				}
+			});
+			const chunks: Buffer[] = [];
+			for await (const chunk of audioOutput) {
+				chunks.push(chunk);
+			}
 
-		// TODO: Implement callback
-		// callback(ChainStep.TextToSpeech, audioOutput);
-		return {
-			audio: audioOutput,
-			text
+			const content = Buffer.concat(chunks);
+			const audioBlob = new Blob([content], { type: 'audio/ogg' });
+			console.log(audioBlob)
+			return {
+				audio: content,
+				text
+			}
+		} catch(e) {
+			// TODO: Handle error
+			throw new Error(e)
 		}
 	}
 }
