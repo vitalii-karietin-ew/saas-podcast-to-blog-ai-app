@@ -4,7 +4,7 @@ import axios from "axios";
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const { question, audioLink } = body;
+  const { messages, audioLink, question } = body;
 
 	const transcriptionChain = new TextTranscriptionChain();
 	const answerGenerationChain = new AskQuestionChain();
@@ -15,8 +15,9 @@ export async function POST(request: Request) {
 	if (!transcription.text) {
 		throw new Error('Transcription failed');
 	};
-
-	const result = await answerGenerationChain.invoke({ question, context: transcription.text });
+	console.log(messages)
+	console.log("last user's message", messages[messages.length - 1].content);
+	const result = await answerGenerationChain.invoke({ question: question || messages[messages.length - 1].content, context: transcription.text });
 	
 	return new NextResponse(result.answer);
 	return NextResponse.json({});	
