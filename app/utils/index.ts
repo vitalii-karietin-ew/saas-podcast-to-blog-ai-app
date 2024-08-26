@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import crypto from "crypto";
 import { PODCAST_INDEX_API_BASE_URL } from '@/app/constants';
 
@@ -17,3 +17,9 @@ export const poadcastIndexAxiosInstance: AxiosInstance = axios.create({
 		"Authorization": crypto.createHash("sha1").update(poadcastIndexApiKey + poadcastIndexApiKeySecret + apiHeaderTime).digest('hex'),
   },
 });
+
+export const formatDuration = (seconds: number): string => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+};
