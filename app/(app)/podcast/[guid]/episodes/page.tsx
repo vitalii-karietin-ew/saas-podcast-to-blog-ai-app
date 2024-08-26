@@ -111,7 +111,6 @@ export const EpisodesPage = ({ params }: PageProps) => {
 				audioLink,
 			});
 			setSummary(summaryResponse.summary);
-			console.log(summaryResponse.summary);
 
 			// Audio to text
 			const { data: audioResponse } = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/text-to-speech`, {
