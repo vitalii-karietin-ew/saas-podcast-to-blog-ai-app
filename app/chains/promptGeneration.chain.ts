@@ -1,6 +1,6 @@
 import { HfInference } from "@huggingface/inference";
-import { ChainStep, PromptGenerationInputType, PromptGenerationOutputType } from "../utils/types";
 import { Runnable, RunnableConfig } from "@langchain/core/runnables";
+import { PromptGenerationInputType, PromptGenerationOutputType } from "../utils/types";
 
 const hf = new HfInference(process.env.HF_ACCESS_TOKEN);
 
@@ -8,7 +8,7 @@ export class PromptGenerationChain extends Runnable<PromptGenerationInputType, P
 	lc_namespace: string[] = ["PromptGenerationChain"];
 
 	async invoke(input: PromptGenerationInputType): Promise<PromptGenerationOutputType> {
-		const { text, callback } = input;
+		const { text } = input;
 		console.log('Generating prompt....');
 
 		const prompt = await hf.chatCompletion({
@@ -21,15 +21,11 @@ export class PromptGenerationChain extends Runnable<PromptGenerationInputType, P
 		});
 
 		if (prompt?.choices[0]?.message?.content) {
-			// TODO: Implement callback
-			// callback(ChainStep.PromptGeneration, prompt.choices[0].message.content);
 			return {
 				prompt: prompt.choices[0].message.content
 			}
 		};
 
-		// TODO: Implement callback
-		// callback(ChainStep.PromptGeneration, "");
 		return {
 			prompt: ""
 		}

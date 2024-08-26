@@ -1,24 +1,9 @@
-// Backend
-export enum ChainStep {
-  Transcription,
-	Summarization,
-	PromptGeneration,
-	TextToSpeech,
-  ImageGeneration,
-	Translation,
-};
-
-export type StepCallback = (step: ChainStep, result: string | ArrayBuffer | Blob | null) => void;
-
 export interface PodcastProcessingInput {
 	audioFile: ArrayBuffer;
 };
 
-interface ChainInput {
-	callback?: StepCallback;
-};
 
-export interface TextTranscriptionInputType extends ChainInput {
+export interface TextTranscriptionInputType {
 	audioSource?: Blob | ArrayBuffer;
 };
 
@@ -26,7 +11,7 @@ export interface TextTranscriptionOutputType {
 	text?: string;
 };
 
-export interface SummarizationInputType extends ChainInput {
+export interface SummarizationInputType {
 	text: string;
 };
 
@@ -34,7 +19,7 @@ export interface SummarizationOutputType {
 	text: string;
 };
 
-export interface TextToSpeechInputType extends ChainInput {
+export interface TextToSpeechInputType {
 	text: string;
 };
 
@@ -43,7 +28,7 @@ export interface TextToSpeechOutputType {
 	text: string;
 };
 
-export interface TextTranslationInputType extends ChainInput {
+export interface TextTranslationInputType {
 	text: string;
 };
 
@@ -51,7 +36,7 @@ export interface TextTranslationOutputType {
 	text: string;
 };
 
-export interface PromptGenerationInputType extends ChainInput {
+export interface PromptGenerationInputType {
 	text: string;
 };
 
@@ -59,7 +44,7 @@ export interface PromptGenerationOutputType {
 	prompt: string;
 };
 
-export interface ImageGenerationInputType extends ChainInput {
+export interface ImageGenerationInputType {
 	prompt: string;
 };
 

@@ -1,6 +1,6 @@
 import { HfInference } from "@huggingface/inference";
-import { AskQuestionInputType, AskQuestionOutputType } from "../utils/types";
 import { Runnable, RunnableConfig } from "@langchain/core/runnables";
+import { AskQuestionInputType, AskQuestionOutputType } from "../utils/types";
 
 const hf = new HfInference(process.env.HF_ACCESS_TOKEN);
 

@@ -1,5 +1,5 @@
 import { HfInference } from "@huggingface/inference";
-import { ChainStep, TextTranslationInputType, TextTranslationOutputType } from "../utils/types";
+import { TextTranslationInputType, TextTranslationOutputType } from "../utils/types";
 import { Runnable, RunnableConfig } from "@langchain/core/runnables";
 
 const hf = new HfInference(process.env.HF_ACCESS_TOKEN);
@@ -8,7 +8,7 @@ export class TextTranslationChain extends Runnable<TextTranslationInputType, Tex
 	lc_namespace: string[] = ["TextTranslationChain"];
 
 	async invoke(input: TextTranslationInputType): Promise<TextTranslationOutputType> {
-		const { text, callback } = input;
+		const { text } = input;
 		console.log('Translation...');
 		const translationResponse = await hf.translation({
 			model: "Helsinki-NLP/opus-mt-en-fr",
@@ -20,8 +20,6 @@ export class TextTranslationChain extends Runnable<TextTranslationInputType, Tex
 
 		const translation = Array.isArray(translationResponse) ? translationResponse[0].translation_text : translationResponse.translation_text;
 
-		// TODO: Implement callback
-		// callback(ChainStep.Translation, translation);
 		return {
 			text: translation
 		}

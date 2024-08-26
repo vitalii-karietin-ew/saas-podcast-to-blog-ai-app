@@ -1,6 +1,6 @@
 import { HfInference } from "@huggingface/inference";
 import { Runnable, RunnableConfig } from "@langchain/core/runnables";
-import { ChainStep, TextTranscriptionInputType, TextTranscriptionOutputType } from "../utils/types";
+import { TextTranscriptionInputType, TextTranscriptionOutputType } from "../utils/types";
 
 const hf = new HfInference(process.env.HF_ACCESS_TOKEN);
 
@@ -20,8 +20,6 @@ export class TextTranscriptionChain extends Runnable<TextTranscriptionInputType,
 			wait_for_model: true
 		});
 
-		// TODO: Implement callback
-		// callback(ChainStep.Transcription, res.text);
 		return {
 			text:	res.text
 		}

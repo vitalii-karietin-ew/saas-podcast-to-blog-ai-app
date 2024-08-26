@@ -1,7 +1,7 @@
 
 import { HfInference } from "@huggingface/inference";
-import { ChainStep, SummarizationInputType, SummarizationOutputType } from "../utils/types";
 import { Runnable, RunnableConfig } from "@langchain/core/runnables";
+import { SummarizationInputType, SummarizationOutputType } from "../utils/types";
 
 const hf = new HfInference(process.env.HF_ACCESS_TOKEN);
 
@@ -16,8 +16,6 @@ export class SummarizationChain extends Runnable<SummarizationInputType, Summari
 			inputs: text
 		});
 
-		// TODO: Implement callback
-		// callback(ChainStep.Summarization, summary.summary_text);
 		return {
 			text: summary.summary_text
 		}

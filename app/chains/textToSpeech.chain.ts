@@ -1,4 +1,4 @@
-import { ChainStep, TextToSpeechInputType, TextToSpeechOutputType } from "../utils/types";
+import { TextToSpeechInputType, TextToSpeechOutputType } from "../utils/types";
 import { Runnable, RunnableConfig } from "@langchain/core/runnables";
 
 import { ElevenLabsClient, ElevenLabs } from "elevenlabs";
@@ -10,12 +10,10 @@ export class TextToSpeechChain extends Runnable<TextToSpeechInputType, TextToSpe
 	lc_namespace: string[] = ["TextToSpeechChain"];
 
 	async invoke(input: TextToSpeechInputType): Promise<TextToSpeechOutputType> {
-		const { text, callback } = input;
+		const { text } = input;
 		console.log('Text to speech processing...');
 		try {
 			const audioOutput = await client.textToSpeech.convert(voiceId, {
-				// optimize_streaming_latency: ElevenLabs.OptimizeStreamingLatency.Zero,
-				// output_format: ElevenLabs.OutputFormat.Mp32205032,
 				text,
 				voice_settings: {
 					stability: 0.1,
@@ -29,8 +27,7 @@ export class TextToSpeechChain extends Runnable<TextToSpeechInputType, TextToSpe
 			}
 
 			const content = Buffer.concat(chunks);
-			const audioBlob = new Blob([content], { type: 'audio/ogg' });
-			console.log(audioBlob)
+
 			return {
 				audio: content,
 				text

@@ -14,7 +14,6 @@ export default function Page() {
     setCompleted(false);
     setLoading(true);
     const { data } = await axios(`${process.env.NEXT_PUBLIC_BASE_URL}/api/podcasts-search?search=${searchInput}`);
-    console.log(data)
     setEpisodes(data.data.feeds);
     setLoading(false);
     setCompleted(true);
@@ -25,6 +24,7 @@ export default function Page() {
       <div className="mb-6 flex items-end">
         <div className="mr-2 flex-1">
           <input
+            disabled={true}
             onChange={(e) => setSearchInput(e.target.value)}
             value={searchInput}
             placeholder="Search input"
