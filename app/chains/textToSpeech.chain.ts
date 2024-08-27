@@ -34,7 +34,7 @@ export class TextToSpeechChain extends Runnable<TextToSpeechInputType, TextToSpe
 			}
 		} catch(e) {
 			// TODO: Handle error
-			throw new Error(e)
+			throw new Error("Error while processing text to speech");
 		}
 	}
 }
