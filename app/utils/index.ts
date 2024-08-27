@@ -14,7 +14,7 @@ export const podcastIndexAxiosInstance: AxiosInstance = axios.create({
 		"User-Agent": "SuperPodcastPlayer/1.8",
 		"X-Auth-Date": apiHeaderTime,			
 		"X-Auth-Key": podcastIndexApiKey,
-		"Authorization": crypto.createHash("sha1").update(podcastIndexApiKey + podcastIndexApiKeySecret + apiHeaderTime).digest('hex'),
+		"Authorization": crypto.createHash("sha1").update((podcastIndexApiKey + podcastIndexApiKeySecret + apiHeaderTime).toString()).digest('hex'),
   },
 });
 
