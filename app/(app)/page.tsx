@@ -4,7 +4,8 @@ import axios from "axios";
 import { useState } from "react";
 import PodcastsList from "../components/PodcastsList/PodcastsList";
 import { Podcast } from "../utils/types";
-
+console.log(process.env.NEXT_PODCAST_INDEX_API_KEY);
+console.log(process.env.NEXT_PODCAST_INDEX_API_KEY_SECRET);
 export default function Page() {
   const [searchInput, setSearchInput] = useState("EdTech Shorts");
   const [podcasts, setPodcasts] = useState<Podcast[]>([]);
