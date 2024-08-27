@@ -1,20 +1,21 @@
 "use client";
 
 import axios from "axios";
-import Link from "next/link";
 import { useState } from "react";
+import PodcastsList from "../components/PodcastsList/PodcastsList";
+import { Podcast } from "../utils/types";
 
 export default function Page() {
   const [searchInput, setSearchInput] = useState("EdTech Shorts");
-  const [episodes, setEpisodes] = useState([]);
+  const [podcasts, setPodcasts] = useState<Podcast[]>([]);
   const [loading, setLoading] = useState(false);
   const [completed, setCompleted] = useState(false);
 
-  const onEpisodesSearchHandler = async () => {
+  const onPodcastsSearchHandler = async () => {
     setCompleted(false);
     setLoading(true);
     const { data } = await axios(`${process.env.NEXT_PUBLIC_BASE_URL}/api/podcasts-search?search=${searchInput}`);
-    setEpisodes(data.data.feeds);
+    setPodcasts(data.data.feeds);
     setLoading(false);
     setCompleted(true);
   };
@@ -35,7 +36,7 @@ export default function Page() {
         </div>
         <button
           disabled={loading}
-          onClick={onEpisodesSearchHandler}
+          onClick={onPodcastsSearchHandler}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
           Search
@@ -54,29 +55,15 @@ export default function Page() {
       )}
       <div className="flex justify-center">
         {completed && (
-          <div>Found: {episodes.length}</div>
+          <div>Found: {podcasts.length}</div>
         )}
       </div>
       <div className="container flex items-center flex-col mt-6">
-        {!loading && completed && (
-          episodes.map((episode: any) => (
-          <div key={episode.podcastGuid} className="mb-4">
-            <Link
-              href={`/podcast/${episode.podcastGuid}/episodes`}
-              className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
-            >
-              {episode.image ? (
-                <img className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src={episode.image} alt=""/>
-              ) : (
-                <div className="object-cover w-full rounded-t-lg h-48 md:w-48 md:rounded-none md:rounded-s-lg bg-gray-200 dark:bg-gray-700"></div>
-              )}
-              <div className="flex flex-col justify-between p-4 leading-normal">
-                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{episode.title}</h5>
-                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{episode.description}</p>
-              </div>
-            </Link>
-          </div>
-        )))}
+        <PodcastsList
+          podcasts={podcasts}
+          loading={loading}
+          completed={completed}
+        />
       </div>
     </div>
   );

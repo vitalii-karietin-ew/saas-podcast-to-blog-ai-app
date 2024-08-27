@@ -63,6 +63,7 @@ export interface AskQuestionOutputType {
 
 // Frontend
 export type Podcast = {
+	podcastGuid: string;
 	title: string;
 	description: string;
 	image: string;

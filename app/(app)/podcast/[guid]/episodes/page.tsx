@@ -48,7 +48,7 @@ const EpisodesPage = ({ params }: PageProps) => {
 	useEffect(() => {
 		setLoading(true);
 		const fetchEpisodes = async () => {
-			const { data } = await axios(`${process.env.NEXT_PUBLIC_BASE_URL}/api/poadcast-episodes?guid=${guid}`);
+			const { data } = await axios(`${process.env.NEXT_PUBLIC_BASE_URL}/api/podcast-episodes?guid=${guid}`);
 			setEpisodes(data.data.items);
 			setLoading(false);
 		}
