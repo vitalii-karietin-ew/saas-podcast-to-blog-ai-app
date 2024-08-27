@@ -24,7 +24,7 @@ function blobToBase64(blob: Blob) {
   });
 };
 
-export const EpisodesPage = ({ params }: PageProps) => {
+const EpisodesPage = ({ params }: PageProps) => {
 	const { guid } = params;
 	const [loading, setLoading] = useState(true);
 	const [episodes, setEpisodes] = useState<any>([]);
