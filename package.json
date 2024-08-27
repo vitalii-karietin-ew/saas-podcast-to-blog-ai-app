@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "echo $NEXT_PODCAST_INDEX_API_KEY; build command --here",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
