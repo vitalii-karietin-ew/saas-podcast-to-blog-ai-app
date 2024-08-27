@@ -49,7 +49,7 @@ const EpisodesPage = ({ params }: PageProps) => {
 		setLoading(true);
 		const fetchEpisodes = async () => {
 			const { data } = await axios(`${process.env.NEXT_PUBLIC_BASE_URL}/api/podcast-episodes?guid=${guid}`);
-			setEpisodes(data.data.items);
+			setEpisodes(data.items);
 			setLoading(false);
 		}
 		fetchEpisodes();

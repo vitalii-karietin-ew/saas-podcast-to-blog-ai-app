@@ -9,8 +9,8 @@ export async function GET(request: NextRequest) {
   };
 
 	try {
-		const res = await podcastIndexAxiosInstance.get(`/episodes/bypodcastguid?guid=${guid}&pretty`);
-		return NextResponse.json({ data: res.data }, { status: 200 });
+		const { data } = await podcastIndexAxiosInstance.get(`/episodes/bypodcastguid?guid=${guid}&pretty`);
+		return NextResponse.json(data, { status: 200 });
 	} catch (error) {
 		console.error('Error fetching podcast episodes:', error);
     
