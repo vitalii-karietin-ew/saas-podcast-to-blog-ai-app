@@ -59,7 +59,7 @@ export default function Page() {
           <div>Found: {podcasts.length}</div>
         )}
       </div>
-      <div className="container flex items-center flex-col mt-6">
+      <div className="flex items-center flex-col mt-6">
         <PodcastsList
           podcasts={podcasts}
           loading={loading}
