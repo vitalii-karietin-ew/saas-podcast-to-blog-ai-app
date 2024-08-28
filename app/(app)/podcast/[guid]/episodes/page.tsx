@@ -4,6 +4,7 @@ import EpisodeDetails from "@/app/components/EpisodeDetails/EpisodeDetails";
 import EpisodesList from "@/app/components/EpisodesList/EpisodesList";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 type Params = {
 	guid: string;
@@ -48,9 +49,17 @@ const EpisodesPage = ({ params }: PageProps) => {
 	useEffect(() => {
 		setLoading(true);
 		const fetchEpisodes = async () => {
-			const { data } = await axios(`${process.env.NEXT_PUBLIC_BASE_URL}/api/podcast-episodes?guid=${guid}`);
-			setEpisodes(data.items);
-			setLoading(false);
+			try {
+				const { data } = await axios(`${process.env.NEXT_PUBLIC_BASE_URL}/api/podcast-episodes?guid=${guid}`);
+				setEpisodes(data.items);
+			} catch (error) {
+				toast("Something went wrong with fetching episodes...", {
+					theme: "dark"
+				});
+				console.error(error);
+			} finally {
+				setLoading(false);
+			}
 		}
 		fetchEpisodes();
 	}, [guid]);
@@ -67,11 +76,20 @@ const EpisodesPage = ({ params }: PageProps) => {
 
 	const onTranslateSummarization = async () => {
 		setTranslationLoading(true);
-		const { data } = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/translate`, {
-			textToTranslate: summary,
-		});
-		setTranslatedSummary(data.translaion);
-		setTranslationLoading(false);
+		try {
+			const { data } = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/translate`, {
+				textToTranslate: summary,
+			});
+			setTranslatedSummary(data.translaion);
+
+		} catch (error) {
+			toast("Something went wrong with translation...", {
+				theme: "dark"
+			});
+			console.error(error);
+		} finally {
+			setTranslationLoading(false);
+		}
 	};
 
 	const onProcessEpisodeHandler = async () => {
@@ -79,34 +97,43 @@ const EpisodesPage = ({ params }: PageProps) => {
 
 		if (audioLink) {
 			setSummarizationLoading(true);
-			// Speech to text
-			const { data: summaryResponse } = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/speech-to-text`, {
-				audioLink,
-			});
-			setSummary(summaryResponse.summary);
 
-			// Audio to text
-			const { data: audioResponse } = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/text-to-speech`, {
-				textToSpeech: summaryResponse.summary,
-			},{
-				responseType: "arraybuffer"
-			});
+			try {
+				// Speech to text
+				const { data: summaryResponse } = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/speech-to-text`, {
+					audioLink,
+				});
+				setSummary(summaryResponse.summary);
 
-			// create Blob from ArrayBuffer and use it as audio source
-			const audioBlob = new Blob([audioResponse as Buffer], { type: 'audio/mp3' });
-			const audioUrl = URL.createObjectURL(audioBlob);
-			setAudioUrl(audioUrl);
+				// Audio to text
+				const { data: audioResponse } = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/text-to-speech`, {
+					textToSpeech: summaryResponse.summary,
+				},{
+					responseType: "arraybuffer"
+				});
 
-			// Generate image
-			const { data: imageResponse } = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/image-generation`, {
-				prompt: summaryResponse.summary,
-			}, {
-				responseType: 'blob',
-			});
-			const base64String = await blobToBase64(imageResponse);
-			setImage(base64String as string);
+				// create Blob from ArrayBuffer and use it as audio source
+				const audioBlob = new Blob([audioResponse as Buffer], { type: 'audio/mp3' });
+				const audioUrl = URL.createObjectURL(audioBlob);
+				setAudioUrl(audioUrl);
 
-			setSummarizationLoading(false);
+				// Generate image
+				const { data: imageResponse } = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/image-generation`, {
+					prompt: summaryResponse.summary,
+				}, {
+					responseType: 'blob',
+				});
+				const base64String = await blobToBase64(imageResponse);
+				setImage(base64String as string);
+
+			} catch (error) {
+				toast("Something went wrong with episode processing...", {
+					theme: "dark"
+				});
+				console.error(error);
+			} finally {
+				setSummarizationLoading(false);
+			}
 		}
 	};
 
@@ -134,6 +161,7 @@ const EpisodesPage = ({ params }: PageProps) => {
 					onTranslateSummarization={onTranslateSummarization}
 				/>
       </div>
+      <ToastContainer/>
     </div>
 	);
 };
