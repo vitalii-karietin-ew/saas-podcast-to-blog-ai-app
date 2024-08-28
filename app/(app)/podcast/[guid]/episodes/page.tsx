@@ -4,7 +4,7 @@ import EpisodeDetails from "@/app/components/EpisodeDetails/EpisodeDetails";
 import EpisodesList from "@/app/components/EpisodesList/EpisodesList";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 type Params = {
 	guid: string;
@@ -161,7 +161,6 @@ const EpisodesPage = ({ params }: PageProps) => {
 					onTranslateSummarization={onTranslateSummarization}
 				/>
       </div>
-      <ToastContainer/>
     </div>
 	);
 };

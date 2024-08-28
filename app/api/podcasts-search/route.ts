@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
 		const res = await podcastIndexAxiosInstance.get(`/search/bytitle?q=${search}&type=all&pretty`);
 		return NextResponse.json({ data: res.data }, { status: 200 });
 	} catch (error) {
-		return NextResponse.json({ error }, { status: 400 });
+		return NextResponse.json({ error }, { status: 500 });
 	}
 }
 

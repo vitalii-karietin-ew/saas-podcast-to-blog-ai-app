@@ -1,6 +1,6 @@
 "use client";
 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { Message } from 'ai';
@@ -175,7 +175,6 @@ export function ChatWindow(props: {
           </button>
         </div>
       </form>
-      <ToastContainer/>
     </div>
   );
 }

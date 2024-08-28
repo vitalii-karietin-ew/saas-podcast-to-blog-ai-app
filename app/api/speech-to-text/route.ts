@@ -30,7 +30,7 @@ export async function POST(request: Request) {
 			summary: res.text
 		});
 	} catch (error) {
-		console.error("Error processing while the summarization:", error);
-		return NextResponse.json({ error: "Error processing while the summarization" });
+		console.error("Error processing while speech-to-text:", error);
+		return NextResponse.json({ error: "Error processing while speech-to-text" }, { status: 500 });
 	};
 };

@@ -23,6 +23,6 @@ export async function POST(request: Request) {
 		return NextResponse.json(res);
   } catch (error) {
 		console.error("Error processing while the summarization:", error);
-		return NextResponse.json({ error: "Error processing while the summarization" });
+		return NextResponse.json({ error: "Error processing while the summarization" }, { status: 500 });
   };
 };
