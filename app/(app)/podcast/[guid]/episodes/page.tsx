@@ -67,7 +67,7 @@ const EpisodesPage = ({ params }: PageProps) => {
 
 	const onTranslateSummarization = async () => {
 		setTranslationLoading(true);
-		const { data } = await axios.post(`api/translate`, {
+		const { data } = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/translate`, {
 			textToTranslate: summary,
 		});
 		setTranslatedSummary(data.translaion);
@@ -80,13 +80,13 @@ const EpisodesPage = ({ params }: PageProps) => {
 		if (audioLink) {
 			setSummarizationLoading(true);
 			// Speech to text
-			const { data: summaryResponse } = await axios.post(`api/speech-to-text`, {
+			const { data: summaryResponse } = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/speech-to-text`, {
 				audioLink,
 			});
 			setSummary(summaryResponse.summary);
 
 			// Audio to text
-			const { data: audioResponse } = await axios.post(`api/text-to-speech`, {
+			const { data: audioResponse } = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/text-to-speech`, {
 				textToSpeech: summaryResponse.summary,
 			},{
 				responseType: "arraybuffer"
@@ -98,7 +98,7 @@ const EpisodesPage = ({ params }: PageProps) => {
 			setAudioUrl(audioUrl);
 
 			// Generate image
-			const { data: imageResponse } = await axios.post(`api/image-generation`, {
+			const { data: imageResponse } = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/image-generation`, {
 				prompt: summaryResponse.summary,
 			}, {
 				responseType: 'blob',
