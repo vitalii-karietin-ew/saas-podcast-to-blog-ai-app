@@ -15,7 +15,7 @@ export default function Page() {
   const onPodcastsSearchHandler = async () => {
     setCompleted(false);
     setLoading(true);
-    const { data } = await axios(`${process.env.NEXT_PUBLIC_BASE_URL}/api/podcasts-search?search=${searchInput}`);
+    const { data } = await axios(`api/podcasts-search?search=${searchInput}`);
     setPodcasts(data.data.feeds);
     setLoading(false);
     setCompleted(true);
