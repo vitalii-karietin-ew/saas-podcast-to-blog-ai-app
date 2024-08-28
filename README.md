@@ -6,7 +6,7 @@ The Podcast to Blog AI App is a full-stack application designed to transcribe, s
 
 ## Demo
 
-https://github.com/user-attachments/assets/ef6c41fa-03f6-4306-81bc-b6ffc73bf172
+https://github.com/user-attachments/assets/34a4c4c4-f6e4-4630-ae59-44e5b8d727a8
 
 ## Preview
 
