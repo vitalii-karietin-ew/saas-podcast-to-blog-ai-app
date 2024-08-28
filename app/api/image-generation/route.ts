@@ -5,12 +5,21 @@ export async function POST(request: Request) {
   const body = await request.json();
   const { prompt } = body;
 
-	const promptGenerationChain = new PromptGenerationChain();
-	const imageGenerationChain = new ImageGenerationChain();
+	if (!prompt) {
+		return NextResponse.json({ error: "Missing prompt parameter" }, { status: 400 });
+	};
 
-	const chains = promptGenerationChain.pipe(imageGenerationChain);
-
-	const result = await chains.invoke({ text: prompt });
+	try {
+		const promptGenerationChain = new PromptGenerationChain();
+		const imageGenerationChain = new ImageGenerationChain();
 	
-	return new NextResponse(result.image);
-}
+		const chains = promptGenerationChain.pipe(imageGenerationChain);
+	
+		const result = await chains.invoke({ text: prompt });
+		
+		return new NextResponse(result.image);
+	} catch(e) {
+		console.error("Error generating image:", e);
+		return NextResponse.json({ error: "An error occurred while generating image" }, { status: 500 });
+	};
+};

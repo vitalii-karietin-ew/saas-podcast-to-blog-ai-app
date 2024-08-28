@@ -125,7 +125,7 @@ export default function EpisodeDetails({
 					)}
 				</div>
 			)}
-			{!loading && episodes?.length && (
+			{!selectedEpisode && (
 				<div>Select episode</div>
 			)}
 		</div>

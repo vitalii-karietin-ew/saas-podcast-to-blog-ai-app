@@ -7,6 +7,10 @@ export async function POST(request: Request) {
   const body = await request.json();
   const { input } = body;
 
+	if (!input) {
+		return NextResponse.json({ error: "Missing input parameter" }, { status: 400 });
+	};
+
   try {
 		const res = await hf.chatCompletion({
 			model: "HuggingFaceH4/zephyr-7b-beta",
@@ -21,5 +25,5 @@ export async function POST(request: Request) {
   } catch (error) {
 		console.error("Error processing while the summarization:", error);
 		return NextResponse.json({ error: "Error processing while the summarization" });
-  }
-}
+  };
+};

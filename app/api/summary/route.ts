@@ -7,6 +7,10 @@ export async function POST(request: Request) {
   const body = await request.json();
   const { textToSummarize } = body;
 
+	if (!textToSummarize) {
+		return NextResponse.json({ error: "Missing textToSummarize parameter" }, { status: 400 });
+	};
+
   try {
 		const res = await hf.summarization({
 			model: 'facebook/bart-large-cnn',
@@ -20,5 +24,5 @@ export async function POST(request: Request) {
   } catch (error) {
 		console.error("Error processing while the summarization:", error);
 		return NextResponse.json({ error: "Error processing while the summarization" });
-  }
-}
+  };
+};
