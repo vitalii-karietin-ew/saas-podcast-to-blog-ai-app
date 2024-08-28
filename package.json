@@ -10,8 +10,6 @@
   },
   "dependencies": {
     "-": "^0.0.1",
-    "@huggingface/agents": "^0.0.5",
-    "@huggingface/hub": "^0.15.1",
     "@huggingface/inference": "^2.8.0",
     "@langchain/community": "^0.2.28",
     "@nanostores/react": "github:ai/react",
