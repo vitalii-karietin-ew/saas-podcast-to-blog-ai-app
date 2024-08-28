@@ -4,6 +4,10 @@
 
 The Podcast to Blog AI App is a full-stack application designed to transcribe, summarize, generate audio, and create visual content based on podcast episodes. The app leverages Hugging Face (HF) APIs, Eleven Labs API, and various other models to process and transform podcast content into engaging blog posts with multimedia elements. This project is built using Next.js and relies on LangChain framework for efficient data handling and API integration.
 
+## Demo
+
+https://github.com/user-attachments/assets/34a4c4c4-f6e4-4630-ae59-44e5b8d727a8
+
 ## Preview
 
 [Vercel preview link](https://saas-podcast-to-blog-ai-app.vercel.app/)
