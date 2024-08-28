@@ -58,10 +58,11 @@ The Podcast to Blog AI App is a full-stack application designed to transcribe, s
 	Create a .env file in the root directory and add the following:
 
 	```
-	HF_API_KEY=your_huggingface_api_key
-	PODCAST_INDEX_API_KEY=your_podcast_index_api_key
-	PODCAST_INDEX_API_SECRET=your_podcast_index_api_secret
-	ELEVEN_LABS_API_KEY=your_elevenlabs_api_key
+	NEXT_PUBLIC_BASE_URL=your_base_url
+	HF_ACCESS_TOKEN=your_huggingface_api_key
+	NEXT_PODCAST_INDEX_API_KEY=your_podcast_index_api_key
+	NEXT_PODCAST_INDEX_API_KEY_SECRET=your_podcast_index_api_secret
+	ELEVENLABS_API_KEY=your_elevenlabs_api_key
 	```
 
 4. **Start the development server**:
