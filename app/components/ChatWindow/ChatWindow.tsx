@@ -23,11 +23,10 @@ export function ChatWindow(props: {
 }) {
   const messageContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const { endpoint, emptyStateComponent, placeholder, titleText = "An LLM", showIngestForm, showIntermediateStepsToggle, emoji, body } = props;
+  const { endpoint, emptyStateComponent, placeholder, titleText = "Chat", showIntermediateStepsToggle, emoji, body } = props;
 
   const [showIntermediateSteps, setShowIntermediateSteps] = useState(false);
   const [intermediateStepsLoading, setIntermediateStepsLoading] = useState(false);
-  // const ingestForm = showIngestForm && <UploadDocumentsForm></UploadDocumentsForm>;
   const intemediateStepsToggle = showIntermediateStepsToggle && (
     <div>
       <input type="checkbox" id="show_intermediate_steps" name="show_intermediate_steps" checked={showIntermediateSteps} onChange={(e) => setShowIntermediateSteps(e.target.checked)}></input>
@@ -150,8 +149,6 @@ export function ChatWindow(props: {
         )}
       </div>
 
-      {/* {messages.length === 0 && ingestForm} */}
-
       <form onSubmit={sendMessage} className="flex w-full flex-col">
         <div className="flex">
           {intemediateStepsToggle}
@@ -160,7 +157,7 @@ export function ChatWindow(props: {
           <input
             className="grow mr-8 p-4 rounded text-black"
             value={input}
-            placeholder={placeholder ?? "Ask question..."}
+            placeholder={placeholder ?? "Ask a question..."}
             onChange={handleInputChange}
           />
           <button type="submit" className="shrink-0 px-8 py-4 bg-sky-600 rounded w-28">
